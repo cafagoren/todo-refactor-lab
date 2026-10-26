@@ -31,6 +31,39 @@ describe("crearTarea", () => {
   });
 });
 
+describe("agregarTarea", () => {
+  it("agrega una tarea y devuelve una nueva colección", () => {
+    const tareas = [
+      { id: 1, titulo: "Leer", completada: false },
+    ];
+    const nuevaTarea = {
+      id: 2,
+      titulo: "Estudiar",
+      completada: false,
+    };
+
+    const resultado = agregarTarea(tareas, nuevaTarea);
+
+    expect(resultado).toEqual([...tareas, nuevaTarea]);
+    expect(resultado).not.toBe(tareas);
+  });
+
+  it("no modifica la colección original", () => {
+    const tareas = [
+      { id: 1, titulo: "Leer", completada: false },
+    ];
+    const nuevaTarea = {
+      id: 2,
+      titulo: "Estudiar",
+      completada: false,
+    };
+
+    agregarTarea(tareas, nuevaTarea);
+
+    expect(tareas).toHaveLength(1);
+  });
+});
+
 // MISIÓN 3: agrega al menos dos pruebas para agregarTarea().
 // MISIÓN 4: prueba id existente e inexistente para buscarTarea().
 // MISIÓN 5: prueba colección mixta, sin coincidencias y vacía.
