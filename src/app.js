@@ -65,6 +65,10 @@ function render() {
     list.appendChild(li);
   });
 
+  renderResumen();
+}
+
+function renderResumen() {
   const resumen = obtenerResumen(tareas);
   summary.textContent =
     `Total: ${resumen.total} | Pendientes: ${resumen.pendientes} | ` +
@@ -101,14 +105,14 @@ list.addEventListener("click", (event) => {
   }
 
   if (idCambiarEstado !== undefined) {
-  const id = Number(idCambiarEstado);
-  const tarea = tareas.find((tarea) => tarea.id === id);
+    const id = Number(idCambiarEstado);
+    const tarea = tareas.find((tarea) => tarea.id === id);
 
-  if (tarea) {
-    tareas = cambiarEstado(tareas, id, !tarea.completada);
-    render();
+    if (tarea) {
+      tareas = cambiarEstado(tareas, id, !tarea.completada);
+      render();
+    }
   }
-}
 });
 
 filters.forEach((button) => {
