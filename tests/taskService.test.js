@@ -98,6 +98,31 @@ describe("obtenerPendientes", () => {
   });
 });
 
+describe("cambiarEstado", () => {
+  const tareas = [
+    { id: 1, titulo: "Leer", completada: false },
+    { id: 2, titulo: "Estudiar", completada: true },
+  ];
+
+  it("cambia el estado de la tarea indicada", () => {
+    const resultado = cambiarEstado(tareas, 1, true);
+
+    expect(resultado[0].completada).toBe(true);
+  });
+
+  it("conserva intactas las demás tareas", () => {
+    const resultado = cambiarEstado(tareas, 1, true);
+
+    expect(resultado[1]).toEqual(tareas[1]);
+  });
+
+  it("devuelve la colección igual si el id no existe", () => {
+    const resultado = cambiarEstado(tareas, 99, true);
+
+    expect(resultado).toEqual(tareas);
+  });
+});
+
 // MISIÓN 3: agrega al menos dos pruebas para agregarTarea().
 // MISIÓN 4: prueba id existente e inexistente para buscarTarea().
 // MISIÓN 5: prueba colección mixta, sin coincidencias y vacía.
