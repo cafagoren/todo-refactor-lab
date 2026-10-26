@@ -142,6 +142,30 @@ describe("eliminarTarea", () => {
   });
 });
 
+describe("obtenerResumen", () => {
+  it("devuelve el total, las pendientes y las terminadas", () => {
+    const tareas = [
+      { id: 1, titulo: "Leer", completada: false },
+      { id: 2, titulo: "Estudiar", completada: true },
+      { id: 3, titulo: "Practicar", completada: false },
+    ];
+
+    expect(obtenerResumen(tareas)).toEqual({
+      total: 3,
+      pendientes: 2,
+      terminadas: 1,
+    });
+  });
+
+  it("devuelve ceros si la colección está vacía", () => {
+    expect(obtenerResumen([])).toEqual({
+      total: 0,
+      pendientes: 0,
+      terminadas: 0,
+    });
+  });
+});
+
 // MISIÓN 3: agrega al menos dos pruebas para agregarTarea().
 // MISIÓN 4: prueba id existente e inexistente para buscarTarea().
 // MISIÓN 5: prueba colección mixta, sin coincidencias y vacía.
