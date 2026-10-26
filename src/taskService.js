@@ -57,3 +57,12 @@ export function obtenerResumen(tareas) {
     terminadas,
   };
 }
+
+export function obtenerPorcentajeAvance(tareas) {
+  if (tareas.length === 0) {
+    return 0;
+  }
+
+  const terminadas = tareas.filter((tarea) => tarea.completada).length;
+  return (terminadas / tareas.length) * 100;
+}
