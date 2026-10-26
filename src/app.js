@@ -1,11 +1,12 @@
-/*
- * MISIÓN 9 · ADAPTADOR DE INTERFAZ
- *
- * Este archivo contiene una versión inicial de interfaz basada en strings para
- * que la aplicación pueda observarse desde el comienzo. Cuando llegues a la
- * Misión 9, reemplaza la lógica de datos por llamadas a taskService.js.
- * El DOM debe leer eventos, delegar reglas al servicio y renderizar resultados.
- */
+import {
+  crearTarea,
+  agregarTarea,
+  cambiarEstado,
+  eliminarTarea,
+  obtenerPendientes,
+  obtenerTerminadas,
+  obtenerResumen,
+} from "./taskService.js";
 
 const form = document.querySelector("#task-form");
 const input = document.querySelector("#task-input");
@@ -15,9 +16,9 @@ const summary = document.querySelector("#summary");
 const filters = [...document.querySelectorAll("[data-filter]")];
 
 let tareas = [
-  { id: 1, titulo: "Revisar requisitos", completada: false },
-  { id: 2, titulo: "Diseñar pruebas", completada: false },
-  { id: 3, titulo: "Refactorizar código", completada: false },
+  crearTarea(1, "Revisar requisitos"),
+  crearTarea(2, "Diseñar pruebas"),
+  crearTarea(3, "Refactorizar código"),
 ];
 
 let siguienteId = 4;
@@ -26,7 +27,15 @@ let filtro = "todas";
 function render() {
   list.innerHTML = "";
 
-  tareas.forEach((tarea, index) => {
+  let tareasVisibles = tareas;
+
+  if (filtro === "pendientes") {
+    tareasVisibles = obtenerPendientes(tareas);
+  } else if (filtro === "terminadas") {
+    tareasVisibles = obtenerTerminadas(tareas);
+  }
+
+  tareasVisibles.forEach((tarea) => {
     const li = document.createElement("li");
     li.className = "task";
 
@@ -34,19 +43,32 @@ function render() {
     titulo.className = "title";
     titulo.textContent = tarea.titulo;
 
+    if (tarea.completada) {
+      titulo.classList.add("completed");
+    }
+
     const acciones = document.createElement("span");
     acciones.className = "task-actions";
 
+    const botonEstado = document.createElement("button");
+    botonEstado.dataset.toggle = tarea.id;
+    botonEstado.textContent = tarea.completada
+      ? "Marcar pendiente"
+      : "Completar";
+
     const botonEliminar = document.createElement("button");
-    botonEliminar.dataset.delete = index;
+    botonEliminar.dataset.delete = tarea.id;
     botonEliminar.textContent = "Eliminar";
 
-    acciones.appendChild(botonEliminar);
+    acciones.append(botonEstado, botonEliminar);
     li.append(titulo, acciones);
     list.appendChild(li);
   });
 
-  summary.textContent = `Total: ${tareas.length}`;
+  const resumen = obtenerResumen(tareas);
+  summary.textContent =
+    `Total: ${resumen.total} | Pendientes: ${resumen.pendientes} | ` +
+    `Terminadas: ${resumen.terminadas}`;
 }
 
 form.addEventListener("submit", (event) => {
@@ -59,33 +81,47 @@ form.addEventListener("submit", (event) => {
     return;
   }
 
-  tareas.push({
-    id: siguienteId,
-    titulo,
-    completada: false,
-  });
-
+  const nuevaTarea = crearTarea(siguienteId, titulo);
+  tareas = agregarTarea(tareas, nuevaTarea);
   siguienteId += 1;
+
   input.value = "";
   message.textContent = "";
   render();
 });
 
 list.addEventListener("click", (event) => {
-  const index = event.target.dataset.delete;
+  const idEliminar = event.target.dataset.delete;
+  const idCambiarEstado = event.target.dataset.toggle;
 
-  if (index === undefined) return;
+  if (idEliminar !== undefined) {
+    tareas = eliminarTarea(tareas, Number(idEliminar));
+    render();
+    return;
+  }
 
-  tareas.splice(Number(index), 1);
-  render();
+  if (idCambiarEstado !== undefined) {
+  const id = Number(idCambiarEstado);
+  const tarea = tareas.find((tarea) => tarea.id === id);
+
+  if (tarea) {
+    tareas = cambiarEstado(tareas, id, !tarea.completada);
+    render();
+  }
+}
 });
 
-filters.forEach((button) =>
+filters.forEach((button) => {
   button.addEventListener("click", () => {
     filtro = button.dataset.filter;
-    filters.forEach((b) => b.classList.toggle("active", b === button));
-    message.textContent = `Filtro '${filtro}' pendiente de integrar durante el refactor.`;
-  })
-);
+
+    filters.forEach((filterButton) => {
+      filterButton.classList.toggle("active", filterButton === button);
+    });
+
+    message.textContent = "";
+    render();
+  });
+});
 
 render();

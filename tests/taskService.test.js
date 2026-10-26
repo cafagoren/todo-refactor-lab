@@ -98,6 +98,25 @@ describe("obtenerPendientes", () => {
   });
 });
 
+describe("obtenerTerminadas", () => {
+  const tareas = [
+    { id: 1, titulo: "Leer", completada: false },
+    { id: 2, titulo: "Estudiar", completada: true },
+  ];
+
+  it("devuelve solo las tareas terminadas", () => {
+    expect(obtenerTerminadas(tareas)).toEqual([tareas[1]]);
+  });
+
+  it("devuelve una colección vacía si no hay tareas terminadas", () => {
+    expect(obtenerTerminadas([tareas[0]])).toEqual([]);
+  });
+
+  it("devuelve una colección vacía si no recibe tareas", () => {
+    expect(obtenerTerminadas([])).toEqual([]);
+  });
+});
+
 describe("cambiarEstado", () => {
   const tareas = [
     { id: 1, titulo: "Leer", completada: false },

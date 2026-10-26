@@ -31,15 +31,14 @@ export function obtenerPendientes(tareas) {
 }
 
 export function obtenerTerminadas(tareas) {
-  // TODO: usar filter().
-  throw new Error("Misión 5 pendiente: implementar obtenerTerminadas()");
+    return tareas.filter((tarea) => tarea.completada === true);
 }
 
 // MISIÓN 6
-export function cambiarEstado(tareas, id) {
+export function cambiarEstado(tareas, id, completada) {
   return tareas.map((tarea) =>
   tarea.id === id
-    ? { ...tarea, completada: !tarea.completada }
+    ? { ...tarea, completada }
     : tarea
 );
 }
