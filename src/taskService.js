@@ -37,10 +37,8 @@ export function obtenerTerminadas(tareas) {
 // MISIÓN 6
 export function cambiarEstado(tareas, id, completada) {
   return tareas.map((tarea) =>
-  tarea.id === id
-    ? { ...tarea, completada }
-    : tarea
-);
+    tarea.id === id ? { ...tarea, completada } : tarea
+  );
 }
 
 // MISIÓN 7
