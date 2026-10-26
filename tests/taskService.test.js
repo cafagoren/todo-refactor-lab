@@ -123,6 +123,25 @@ describe("cambiarEstado", () => {
   });
 });
 
+describe("eliminarTarea", () => {
+  const tareas = [
+    { id: 1, titulo: "Leer", completada: false },
+    { id: 2, titulo: "Estudiar", completada: true },
+  ];
+
+  it("elimina la tarea con el id indicado", () => {
+    expect(eliminarTarea(tareas, 1)).toEqual([tareas[1]]);
+  });
+
+  it("conserva la colección si el id no existe", () => {
+    expect(eliminarTarea(tareas, 99)).toEqual(tareas);
+  });
+
+  it("devuelve una colección vacía si no hay tareas", () => {
+    expect(eliminarTarea([], 1)).toEqual([]);
+  });
+});
+
 // MISIÓN 3: agrega al menos dos pruebas para agregarTarea().
 // MISIÓN 4: prueba id existente e inexistente para buscarTarea().
 // MISIÓN 5: prueba colección mixta, sin coincidencias y vacía.
