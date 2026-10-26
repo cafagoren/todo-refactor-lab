@@ -7,7 +7,8 @@ import {
   obtenerTerminadas,
   cambiarEstado,
   eliminarTarea,
-  obtenerResumen
+  obtenerResumen,
+  obtenerPorcentajeAvance,
 } from "../src/taskService.js";
 
 /*
@@ -182,6 +183,30 @@ describe("obtenerResumen", () => {
       pendientes: 0,
       terminadas: 0,
     });
+  });
+});
+
+describe("obtenerPorcentajeAvance", () => {
+  it("devuelve 0 si no hay tareas", () => {
+    expect(obtenerPorcentajeAvance([])).toBe(0);
+  });
+
+  it("devuelve 50 cuando la mitad de las tareas está terminada", () => {
+    const tareas = [
+      { id: 1, titulo: "Leer", completada: true },
+      { id: 2, titulo: "Estudiar", completada: false },
+    ];
+
+    expect(obtenerPorcentajeAvance(tareas)).toBe(50);
+  });
+
+  it("devuelve 100 si todas las tareas están terminadas", () => {
+    const tareas = [
+      { id: 1, titulo: "Leer", completada: true },
+      { id: 2, titulo: "Estudiar", completada: true },
+    ];
+
+    expect(obtenerPorcentajeAvance(tareas)).toBe(100);
   });
 });
 

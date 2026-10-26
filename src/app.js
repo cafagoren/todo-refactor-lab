@@ -6,6 +6,7 @@ import {
   obtenerPendientes,
   obtenerTerminadas,
   obtenerResumen,
+  obtenerPorcentajeAvance,
 } from "./taskService.js";
 
 const form = document.querySelector("#task-form");
@@ -70,9 +71,10 @@ function render() {
 
 function renderResumen() {
   const resumen = obtenerResumen(tareas);
+  const porcentaje = Math.round(obtenerPorcentajeAvance(tareas));
   summary.textContent =
-    `Total: ${resumen.total} | Pendientes: ${resumen.pendientes} | ` +
-    `Terminadas: ${resumen.terminadas}`;
+  `Total: ${resumen.total} | Pendientes: ${resumen.pendientes} | ` +
+  `Terminadas: ${resumen.terminadas} | Avance: ${porcentaje}%`;
 }
 
 form.addEventListener("submit", (event) => {
