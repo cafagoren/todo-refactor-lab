@@ -79,6 +79,25 @@ describe("buscarTarea", () => {
   });
 });
 
+describe("obtenerPendientes", () => {
+  const tareas = [
+    { id: 1, titulo: "Leer", completada: false },
+    { id: 2, titulo: "Estudiar", completada: true },
+  ];
+
+  it("devuelve solo las tareas pendientes", () => {
+    expect(obtenerPendientes(tareas)).toEqual([tareas[0]]);
+  });
+
+  it("devuelve una colección vacía si no hay pendientes", () => {
+    expect(obtenerPendientes([tareas[1]])).toEqual([]);
+  });
+
+  it("devuelve una colección vacía si no recibe tareas", () => {
+    expect(obtenerPendientes([])).toEqual([]);
+  });
+});
+
 // MISIÓN 3: agrega al menos dos pruebas para agregarTarea().
 // MISIÓN 4: prueba id existente e inexistente para buscarTarea().
 // MISIÓN 5: prueba colección mixta, sin coincidencias y vacía.

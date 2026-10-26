@@ -27,8 +27,7 @@ export function buscarTarea(tareas, id) {
 
 // MISIÓN 5
 export function obtenerPendientes(tareas) {
-  // TODO: usar filter().
-  throw new Error("Misión 5 pendiente: implementar obtenerPendientes()");
+  return tareas.filter((tarea) => tarea.completada === false);
 }
 
 export function obtenerTerminadas(tareas) {
